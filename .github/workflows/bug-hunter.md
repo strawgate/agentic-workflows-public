@@ -100,4 +100,6 @@ Do NOT file a bug without reproducing it:
 [The minimal reproduction code]
 ```
 
-Call `create_issue` with the report, or `noop` if no bug found.
+When calling `create_issue`, you MUST specify the `repo` parameter as `${{ inputs.target_repo }}` to file the issue in the target repository (not the repository where this workflow runs).
+
+Call `create_issue` with the report (including `repo: "${{ inputs.target_repo }}"`), or `noop` if no bug found.
