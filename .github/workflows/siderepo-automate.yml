@@ -1,6 +1,15 @@
 name: siderepo-automate
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: 'Target repos'
+        required: false
+        default: 'strawgate/agentic-workflows'
+      task:
+        description: 'Task description'
+        required: false
+        default: 'daily status'
   schedule:
     - cron: '0 6 * * 1-5'
 
