@@ -42,6 +42,7 @@ safe-outputs:
   add-comment:
     target-repo: ${{ inputs.target_repo }}
     max: 5
+    discussions: false
 
 timeout-minutes: 60
 ---
