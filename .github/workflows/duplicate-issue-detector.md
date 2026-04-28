@@ -32,7 +32,7 @@ engine:
 tools:
   github:
     mode: remote
-    allowed: [list_issues, get_issue, add_comment]
+    allowed: [list_issues]
 
 safe-outputs:
   add-comment:
