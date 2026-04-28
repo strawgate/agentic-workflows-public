@@ -31,27 +31,26 @@ jobs:
       uses: actions/checkout@v4
       with: repo-token: ${{ github.token }}
       if-no-files-found: error
-    - id: inputs
-      name: Compute inputs from GitHub event
-      uses: ./.actions/setup
-      with: repo-token: ${{ github.token }}
-    - id: agent
-      name: Run agent
-      uses: ./.actions/agent
-      with:
+  - id: inputs
+    name: Setup OpenCode
+    uses: ./.actions/setup
+  - id: agent
+    name: Run OpenCode agent
+    uses: ./.actions/agent
+    with:
         engine: opencode
-        engine-version: "0.1.0"
         engine-model: claude-3-5-sonnet-20241022
-        engine-env: ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic,ANTHROPIC_AUTH_TOKEN=${{ secrets.MINIMAX_API_KEY }}
-        inputs: ${{ steps.inputs.outputs.inputs }}
+        inputs: '${{ steps.inputs.outputs.inputs }}'
         context: ${{ steps.inputs.outputs.context }}
         repository: ${{ github.repository }}
-    - id: safe-output
-      name: Execute safe outputs
-      uses: ./.actions/output
-      if: success() || failure()
-      with: repo-token: ${{ github.token }}
+        task: ${{ github.event.inputs.task || 'Create a daily status report for this repository' }}
+  - id: safe-output
+    name: Execute safe outputs
+    uses: ./.actions/output
+    if: success() || failure()
+    with:
+        repo-token: ${{ github.token }}
         github-app-client-id: ${{ vars.APP_ID }}
         github-app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
         github-app-owner: strawgate-llc
-        github-app-repositories: [agentic-workflows]
+        github-app-repositories: agentic-workflows
