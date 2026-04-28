@@ -52,172 +52,242 @@ safe-outputs:
 timeout-minutes: 90
 ---
 
-Audit React and TypeScript code for framework-specific anti-patterns and best practice violations.
+Audit React and TypeScript code for anti-patterns and best practice violations.
 
 **Target Repository**: ${{ inputs.target_repo }}
 **File Filter**: ${{ inputs.file_filter }}
 
-## Your Task
+## Step 1: Understand the Project Before Auditing
 
-1. Explore the repository structure to understand the React/TypeScript project layout
-2. Identify package.json to understand framework versions and dependencies
-3. Focus on areas most likely to have React/TypeScript-specific issues
+Before reviewing any component files, read these files first:
 
-## React Anti-Patterns to Look For
+1. `package.json` — identify React version, framework (Next.js/Vite/Remix/CRA), and whether
+   `babel-plugin-react-compiler` or `@next/react-compiler` is present.
+2. `tsconfig.json` — check `strict` mode, path aliases.
+3. One or two existing components to understand the project's conventions, state libraries,
+   styling approach (Tailwind, MUI, CSS modules), and data-fetching patterns.
 
-### Critical (Accessibility & Correctness)
+**Record these findings before proceeding.** They change which rules apply.
 
-1. **onClick on Non-Interactive Elements**
-   - `onClick` on `<div>`, `<span>`, or `<Box>` without `component="button"`
-   - Use `<Button>`, `<IconButton>`, or `<ListItemButton>` for keyboard accessibility
-   - Non-interactive elements cannot be focused or activated via keyboard
+### Framework Routing Table
 
-2. **Missing Key Props in Lists**
-   - Map functions without `key` prop
-   - Using index as key when items can be reordered
-   - Keys that aren't stable across renders
+| Detected Setup | Data Fetching Standard | Memoization Guidance |
+|---|---|---|
+| Next.js App Router | Async Server Components or Server Actions | React Compiler likely active — skip manual memo |
+| Next.js Pages Router | `getServerSideProps` / `getStaticProps` or SWR/TanStack Query | Manual memo may still be appropriate |
+| Remix / RR v7 | Loaders and Actions | Manual memo may still be appropriate |
+| Vite / CRA SPA | TanStack Query, SWR, or custom hooks | Manual memo may still be appropriate |
 
-3. **Inline Function Definitions in JSX**
-   - `<button onClick={() => handleClick()}>` in render
-   - Creates new function instance on every render
-   - Extract to useCallback or define outside component
+---
 
-4. **Hardcoded Colors**
-   - Hardcoded hex/rgb/rgba colors in sx props or style objects
-   - Must use theme tokens (e.g., `'primary.main'`, `'text.secondary'`)
-   - Creates inconsistent theming and breaks dark mode
+## React Anti-Patterns
 
-5. **Props Spreading Without Typing**
-   - `{...props}` spreading untyped props
-   - Spreading known props that shouldn't be forwarded
-   - Missing prop restrictions
+### 🔴 Critical — Correctness & Crashes
 
-6. **useEffect Dependencies**
-   - Missing dependencies in useEffect deps array
-   - Stale closure issues
-   - useEffect running on every render
+**1. Conditional or post-return hooks**
+Hooks called inside `if` blocks, loops, ternaries, after an early `return`, inside `try/catch`,
+or inside event handlers. Violates React's rules of hooks — causes ordering bugs and runtime errors.
 
-### High Priority
+**2. Component definitions inside other components**
+```tsx
+// ❌ Child is recreated on every render — resets all hooks, kills memoization
+const Parent = () => {
+  const Child = () => <div />;  // move this outside Parent
+  return <Child />;
+};
+```
+This silently resets all hook state inside Child on every render. It is one of the most common
+hard-to-diagnose React bugs.
 
-7. **Empty Data Without EmptyState**
-   - Conditional rendering for `data.length === 0`, `!data`, `!results`
-   - Returns null or blank div instead of `<EmptyState />`
-   - Creates blank rectangles in UI
+**3. Direct state mutation**
+```tsx
+state.items.push(item); setState(state); // ❌ mutating the same reference
+```
 
-8. **State Updates from Props**
-   - Copying prop to local state without synchronization
-   - `useState(initialValue)` where initialValue comes from props
+**4. Missing cleanup for subscriptions, timers, or async operations**
+```tsx
+// ❌ Race condition — no AbortController, no cleanup
+useEffect(() => {
+  fetch(`/api/data/${id}`).then(r => r.json()).then(setData);
+}, [id]);
+```
+Fix: `AbortController` + cleanup return, or replace with TanStack Query / SWR.
 
-9. **Context Misuse**
-   - Creating new objects/arrays in render for context value
-   - Context provider value changes on every render
-   - Not splitting context by update frequency
+**5. Setting state during render (outside event handlers or effects)**
+Causes an infinite render loop or at minimum extra renders.
 
-10. **Component Composition Issues**
-    - Props drilling more than 2-3 levels
-    - Not using compound components when appropriate
-    - Wrapper components that just pass through children
+**6. Unstable keys in lists**
+- Missing `key` prop entirely
+- `key={index}` when list items can be reordered or removed
+- `key={Math.random()}` or any value that changes every render
 
-11. **Side Effects in Render**
-    - API calls in render body
-    - State updates in render
-    - Navigation in render
+---
 
-12. **MUI Barrel Imports**
-    - Importing from `@mui/material` or `@mui/icons-material` barrel
-    - Causes tree-shaking issues
-    - Use specific path imports: `@mui/material/Button`
+### 🟠 High — Performance & Correctness
 
-### Medium Priority (Design System)
+**7. Unnecessary `useEffect` — derive instead of synchronize**
 
-13. **Non-Standard Spacing**
-    - Using arbitrary numeric values in sx props
-    - Must use approved SpaceTokens: 0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 6
+If a value can be computed from props or existing state during render, computing it inline is
+always correct and faster. `useEffect` for this causes a double render.
 
-14. **Non-Standard Typography Variants**
-    - Using non-approved Typography variants
-    - Approved variants: h3, h5, h6, subtitle1, body1, body2, caption
-    - Creates inconsistent type scale
+```tsx
+// ❌ Unnecessary effect — causes extra render
+const [filtered, setFiltered] = useState([]);
+useEffect(() => {
+  setFiltered(items.filter(i => i.active));
+}, [items]);
+
+// ✅ Derive during render
+const filtered = items.filter(i => i.active);
+```
+
+Flag these patterns as unnecessary effects:
+- Filtering/sorting/mapping state or props into new state
+- Copying a prop into local state (`useState(props.value)`)
+- Computing a string, count, or total from other state
+- Syncing two pieces of React state that should be one
+
+**8. `useEffect` with incorrect or missing dependency array**
+- Missing declared variables used inside the effect (stale closures)
+- Empty `[]` when the effect actually uses reactive values
+- No dependency array at all (runs every render, almost always a bug)
+
+**9. `onClick` (or other event handlers) on non-interactive elements**
+`<div onClick>`, `<span onClick>`, `<Box onClick>` without `role="button"` and `tabIndex={0}`.
+These are inaccessible: keyboard users cannot focus or activate them. Use `<Button>`,
+`<IconButton>`, or `<ListItemButton>` instead.
+
+**10. Inline function or object literals defeating memoized children**
+```tsx
+// ❌ New reference on every render — breaks React.memo on ChildComponent
+<ChildComponent onAction={() => doThing(id)} style={{ margin: 8 }} />
+```
+Use `useCallback` / `useMemo` (or move the value outside the component if it doesn't close over
+state). Exception: skip this if the React Compiler is detected (it handles it automatically).
+
+**11. Empty/null/missing states rendered as blank space**
+Conditional rendering for `data.length === 0`, `!results`, `isLoading` that returns `null` or
+an empty `<div>` creates blank UI rectangles. Render a proper `<EmptyState />` or skeleton
+component.
+
+**12. Context value object/array created inline in the provider**
+```tsx
+// ❌ New object reference every render — every consumer re-renders
+<MyContext.Provider value={{ user, logout }}>
+```
+Stabilize with `useMemo`, or split into separate contexts by update frequency.
+
+**13. Prop drilling beyond 2–3 levels**
+When the same prop passes through 3+ components that don't use it, factor it into Context,
+Zustand, or another state solution.
+
+**14. MUI barrel imports**
+```tsx
+// ❌ Prevents tree-shaking, bloats bundle
+import { Button, Stack, Typography } from '@mui/material';
+
+// ✅
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+```
+
+---
+
+### 🟡 Medium — Code Quality & Maintainability
+
+**15. Hardcoded colors**
+Hex/rgb/rgba in `sx` props or `style` objects. Use theme tokens (`'primary.main'`,
+`'text.secondary'`) for consistent theming and dark mode support.
+
+**16. Non-standard spacing values**
+Arbitrary numeric `sx` values outside the project's approved spacing scale.
+Approved: `0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 6`.
+
+**17. Non-approved Typography variants**
+Approved: `h3, h5, h6, subtitle1, body1, body2, caption`.
+
+**18. `useState` for values that don't affect rendering**
+Timers, previous value refs, imperative handles — use `useRef` instead to avoid unnecessary
+re-renders.
+
+**19. God components**
+Components >150 lines or with >6 props where concerns are mixed. Extract sub-components and
+logic into custom hooks.
+
+**20. `useEffect` calling external library init that doesn't depend on state**
+Move module-level initialization outside the component entirely.
+
+---
 
 ## TypeScript Anti-Patterns
 
-### Critical
+### 🔴 Critical
 
-9. **any Type Usage**
-   - Variables typed as `any`
-   - Function return types as `any`
-   - Object without interface/type
+**T1. `any` type usage**
+Variables, function parameters, or return types typed as `any`. Replace with specific types,
+`unknown` + narrowing, or generics.
 
-10. **Type Assertions Without Validation**
-    - `value as SomeType` without validation
-    - Non-null assertions (`!`) without guarantees
+**T2. Unsafe type assertions without validation**
+`value as SomeType` without a type guard. Non-null assertions (`!`) without a documented
+guarantee. These are silent runtime crash sources.
 
-11. **Structural Typing Abuse**
-    - Duck typing causing runtime errors
-    - Missing discriminated unions
-    - Overly broad types hiding bugs
+**T3. Missing discriminated unions for UI state**
+```tsx
+// ❌ These can be contradictory — both true/false simultaneously
+const [isLoading, setIsLoading] = useState(false);
+const [isError, setIsError] = useState(false);
+const [data, setData] = useState(null);
 
-### High Priority
-
-12. **Missing Null Checks**
-    - Accessing properties without null checks
-    - Optional chaining abuse (`?.?.?`)
-    - Defensive programming not practiced
-
-13. **Generics Misuse**
-    - `Array<any>` instead of proper generic type
-    - Overly complex generic constraints
-    - Type inference defeat by casting
-
-14. **readonly Inconsistency**
-    - Mutable arrays/objects passed to functions expecting readonly
-    - Missing `readonly` modifier on shared data
-    - Inconsistent immutability patterns
-
-15. **Enum Usage**
-    - Using JavaScript enums instead of TypeScript const enums
-    - String enums vs union types
-    - Runtime enum values causing issues
-
-### Medium Priority
-
-16. **Utility Types Underuse**
-    - Not using `Partial`, `Required`, `Pick`, `Omit`
-    - Manually reimplementing utility type logic
-
-17. **Decorator Confusion**
-    - Incorrect decorator syntax
-    - Experimental decorators without proper config
-
-18. **Namespace vs Module**
-    - Using `namespace` instead of ES modules
-    - Import/export confusion
-
-## Issue Format
-
-Create one consolidated issue with all findings:
-
-```
-## React/TypeScript Code Audit Summary
-
-**Repository:** [target_repo]
-**Files audited:** [count]
-**Issues found:** [count by severity]
-
-### Critical Severity
-
-#### 1. [Title]
-**File:** [path:line]
-**Problem:** [description]
-**Fix:** [suggested approach]
-
-### High Priority
-
-...
-
-## Recommended Actions
-
-- [ ] [Actionable fix for each critical issue]
+// ✅ Impossible states become unrepresentable
+type State = { status: 'loading' } | { status: 'error'; error: Error } | { status: 'success'; data: Data };
 ```
 
-If no significant React/TypeScript issues found, call `noop`.
+---
+
+### 🟠 High
+
+**T4. Missing null checks on optional chaining chains**
+Cascading `?.?.?.` that silently swallows undefined values, hiding real bugs.
+
+**T5. `Array<any>` instead of typed generics**
+`useState<any[]>([])`, `useRef<any>()`, function parameters `fn(items: any[])`.
+
+**T6. Untyped event handlers**
+```tsx
+// ❌
+const handleChange = (e) => { ... }
+
+// ✅
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { ... }
+```
+
+**T7. Props spreading untyped or overly broad objects**
+`{...props}` where `props` is `any` or `object` — forwards unknown attributes to DOM elements,
+causes React warnings and potential XSS vectors.
+
+---
+
+### 🟡 Medium
+
+**T8. Underuse of utility types**
+Manually reimplementing `Partial`, `Required`, `Pick`, `Omit`, `Record`, `ReturnType`.
+
+**T9. JavaScript-style enums instead of union types**
+```tsx
+// ❌ Creates runtime overhead and bundle bloat
+enum Status { Active, Inactive }
+
+// ✅
+type Status = 'active' | 'inactive';
+```
+
+**T10. Missing `readonly` on shared immutable data**
+Arrays and objects passed into components for display should be `readonly` to prevent
+accidental mutation.
+
+---
+
+## Issue Output Format
+
+Create one consolidated issue with all findings, grouped by severity. Skip sections with no
+findings.
