@@ -53,21 +53,24 @@ jobs:
           # Create daily status issue
           gh issue create \
             --title "[automation] Daily Repository Status - $(date +%Y-%m-%d)" \
-            --body '{"text":"## Daily Repository Health Report
+            --body "
+## Daily Repository Health Report
 
 Repository: ${{ steps.analyze.outputs.repository }}
 Generated: $(date -u)
-Engine: OpenCode (Simulated) + MiniMax AI
+Engine: OpenCode (Simulated) + MiniMax API
 
 Repository Analysis:
-- Code Quality: Monitoring active
-- Issues: $(gh issue list --json number --limit 1000 | jq length) total
-- PRs: $(gh pr list --json number --limit 100 | jq length) active
+Code Quality: Monitoring active
+Issues: $(gh issue list --json number --limit 1000 | jq length) total
+PRs: $(gh pr list --json number --limit 100 | jq length) active
 
-Recommendations: High Priority: Review open pull requests. Medium Priority: Update dependencies.
+Recommendations: 
+High Priority: Review open pull requests
+Medium Priority: Update dependencies
 
-*Generated automatically by SideRepoOps workflow*
-"}' | jq -r .text
+Generated automatically by SideRepoOps workflow
+"
 " \
             --label automation
             || echo "✅ Daily status issue created successfully"
