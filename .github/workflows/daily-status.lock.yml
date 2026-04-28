@@ -1,0 +1,51 @@
+name: daily-status
+on:
+  schedule:
+    - cron: '0 2 * * 1-5'  # Weekdays 2AM UTC
+  workflow_dispatch:
+    inputs:
+      repos:
+        description: 'Comma-separated list of target repos'
+        required: false
+        default: 'strawgate/agentics'
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
+jobs:
+  run-daily-status:
+    runs-on: ubuntu-latest
+    environment: ${environment}-{context}
+    concurrency:
+      group: gh-aw-${{ github.workflow }}
+    steps:
+    - name: Checkout workspace
+      uses: actions/checkout@v4
+      with: repo-token: ${{ github.token }}
+      if-no-files-found: error
+    - id: inputs
+      name: Compute inputs from GitHub event
+      uses: ./.actions/setup
+      with: repo-token: ${{ github.token }}
+    - id: agent
+      name: Run agent
+      uses: ./.actions/agent
+      with:
+        engine: opencode
+        engine-version: "0.1.0"
+        engine-model: claude-3-5-sonnet-20241022
+        engine-env: ANTHROPIC_BASE_URL=https://api.minimax.io/anthropic,ANTHROPIC_AUTH_TOKEN=${{ secrets.MINIMAX_API_KEY }}
+        inputs: ${{ steps.inputs.outputs.inputs }}
+        context: ${{ steps.inputs.outputs.context }}
+        repository: ${{ github.repository }}
+    - id: safe-output
+      name: Execute safe outputs
+      uses: ./.actions/output
+      if: success() || failure()
+      with: repo-token: ${{ github.token }}
+        github-app-client-id: ${{ vars.APP_ID }}
+        github-app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
+        github-app-owner: strawgate-llc
+        github-app-repositories: [agentics]
