@@ -8,9 +8,10 @@ inputs:
 runs:
   using: composite
   steps:
-  - name: Run OpenCode agent  
+  - name: Run agent
     shell: bash
     env:
+      GH_TOKEN: ${{ github.token }}
       ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic
       ANTHROPIC_AUTH_TOKEN: ${{ secrets.MINIMAX_API_KEY }}
     run: |
