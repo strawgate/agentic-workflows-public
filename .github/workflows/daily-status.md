@@ -32,10 +32,10 @@ safe-outputs:
   github-app:
     client-id: ${{ vars.APP_ID }}
     private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    owner: strawgate-llc
-    repositories: [agentics]
+    owner: strawgate-llc  
+    repositories: ["strawgate/agentic-workflows"]
   create-issue:
-    target-repo: ${{ inputs.repos }}
+    target-repo: strawgate/agentic-workflows
     title-prefix: "[daily-status] "
     labels: [automation, daily]
     max: 1

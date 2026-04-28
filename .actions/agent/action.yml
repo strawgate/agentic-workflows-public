@@ -1,0 +1,39 @@
+name: 'Run OpenCode agent'
+description: 'Runs OpenCode agent with specified parameters'
+inputs:
+  engine:
+    description: 'Engine type'
+    required: true
+    default: 'opencode'
+  engine-version:
+    description: 'Engine version'
+    required: false
+    default: '0.1.0'
+  engine-model:
+    description: 'Model to use'
+    required: false  
+    default: 'claude-3-5-sonnet-20241022'
+  engine-env:
+    description: 'Environment variables'
+    required: false
+    default: ''
+  inputs:
+    description: 'Input data'
+    required: true
+  context:
+    description: 'Context data'
+    required: true
+  repository:
+    description: 'Repository'
+    required: true
+runs:
+  using: composite
+  steps:
+  - name: Run agent
+    shell: bash
+    env:
+      ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic
+      ANTHROPIC_AUTH_TOKEN: ${{ secrets.MINIMAX_API_KEY }}
+    run: |
+      echo "Running OpenCode agent..."
+      opencode run --model ${{ inputs.engine-model }} --repository ${{ inputs.repository }} --task "${{ inputs.task }}" || echo "Agent completed"
