@@ -44,6 +44,7 @@ safe-outputs:
     close-older-key: "[docs-patrol]"
     close-older-issues: true
     expires: 7d
+    target-repo: ${{ inputs.target_repo }}
 
 timeout-minutes: 60
 ---
