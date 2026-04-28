@@ -7,7 +7,7 @@ on:
       repos:
         description: 'Comma-separated list of target repos'
         required: false
-        default: 'strawgate/agentics'
+        default: 'strawgate/agentic-workflows'
         type: string
 
 permissions:
