@@ -1,0 +1,31 @@
+{
+  "engine_id": "opencode",
+  "engine_name": "OpenCode",
+  "model": "anthropic/claude-3-5-sonnet-20241022",
+  "version": "0.1.0",
+  "agent_version": "0.1.0",
+  "workflow_name": "Daily Repository Status Workflow (SideRepoOps with OpenCode + MiniMax)",
+  "experimental": true,
+  "supports_tools_allowlist": false,
+  "run_id": 25063885218,
+  "run_number": 32,
+  "run_attempt": "1",
+  "repository": "strawgate/agentic-workflows",
+  "ref": "refs/heads/main",
+  "sha": "c3d3c9830258a816314321f7fdea471aa672901c",
+  "actor": "strawgate",
+  "event_name": "workflow_dispatch",
+  "target_repo": "",
+  "staged": false,
+  "allowed_domains": [
+    "defaults"
+  ],
+  "firewall_enabled": false,
+  "awf_version": "",
+  "awmg_version": "",
+  "steps": {
+    "firewall": "squid"
+  },
+  "created_at": "2026-04-28T16:04:51.899Z",
+  "cli_version": "v0.71.1"
+}

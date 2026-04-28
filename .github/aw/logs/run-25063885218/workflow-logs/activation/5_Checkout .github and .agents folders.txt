@@ -1,0 +1,181 @@
+﻿2026-04-28T16:04:51.9492991Z ##[group]Run actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+2026-04-28T16:04:51.9493744Z with:
+2026-04-28T16:04:51.9494132Z   persist-credentials: false
+2026-04-28T16:04:51.9494778Z   sparse-checkout: .github
+.agents
+.claude
+.codex
+.crush
+.gemini
+.opencode
+
+2026-04-28T16:04:51.9495522Z   sparse-checkout-cone-mode: true
+2026-04-28T16:04:51.9495994Z   fetch-depth: 1
+2026-04-28T16:04:51.9496412Z   repository: strawgate/agentic-workflows
+2026-04-28T16:04:51.9497076Z   token: ***
+2026-04-28T16:04:51.9497444Z   ssh-strict: true
+2026-04-28T16:04:51.9497818Z   ssh-user: git
+2026-04-28T16:04:51.9498189Z   clean: true
+2026-04-28T16:04:51.9498861Z   fetch-tags: false
+2026-04-28T16:04:51.9499268Z   show-progress: true
+2026-04-28T16:04:51.9499665Z   lfs: false
+2026-04-28T16:04:51.9500020Z   submodules: false
+2026-04-28T16:04:51.9500421Z   set-safe-directory: true
+2026-04-28T16:04:51.9500837Z env:
+2026-04-28T16:04:51.9507439Z   GH_AW_MODEL_MULTIPLIERS: {
+  "version": "1",
+  "description": "Effective Tokens (ET) computation data per the gh-aw Effective Tokens Specification v0.2.0. Token class weights are applied first to normalize across token classes, then the per-model multiplier scales the result relative to the reference model.",
+  "reference_model": "claude-sonnet-4.5",
+  "token_class_weights": {
+    "input": 1.0,
+    "cached_input": 0.1,
+    "output": 4.0,
+    "reasoning": 4.0,
+    "cache_write": 1.0
+  },
+  "multipliers": {
+    "claude-haiku-4.5": 0.1,
+    "claude-3-5-haiku": 0.1,
+    "claude-3-haiku": 0.1,
+    "claude-sonnet-4.5": 1.0,
+    "claude-sonnet-4.6": 1.0,
+    "claude-3-5-sonnet": 1.0,
+    "claude-3-7-sonnet": 1.0,
+    "claude-3-sonnet": 1.0,
+    "claude-opus-4.5": 5.0,
+    "claude-opus-4.6": 5.0,
+    "claude-3-5-opus": 5.0,
+    "claude-3-opus": 5.0,
+    "gpt-4o": 1.0,
+    "gpt-4o-mini": 0.1,
+    "gpt-4.1": 1.0,
+    "gpt-4.1-2025-04-14": 1.0,
+    "gpt-41-copilot": 1.0,
+    "gpt-4.1-mini": 0.1,
+    "gpt-4.1-nano": 0.05,
+    "gpt-4-turbo": 1.0,
+    "gpt-4": 1.0,
+    "gpt-5": 1.0,
+    "gpt-5-mini": 0,
+    "gpt-5.1": 1.0,
+    "gpt-5.1-codex": 1.0,
+    "gpt-5.1-codex-mini": 0.33,
+    "gpt-5.1-codex-max": 1.0,
+    "gpt-5.2": 1.0,
+    "gpt-5.2-codex": 1.0,
+    "gpt-5.3-codex": 1.0,
+    "gpt-5.4": 1.0,
+    "gpt-5.4-mini": 0.33,
+    "o1": 3.0,
+    "o1-mini": 0.5,
+    "o1-pro": 10.0,
+    "o3": 3.0,
+    "o3-mini": 0.5,
+    "o4-mini": 0.5,
+    "gemini-2.5-pro": 1.0,
+    "gemini-2.5-flash": 0.2,
+    "gemini-2.0-flash": 0.1,
+    "gemini-1.5-pro": 1.0,
+    "gemini-1.5-flash": 0.1
+  }
+}
+2026-04-28T16:04:51.9515250Z   GITHUB_AW_OTEL_TRACE_ID: c7c247f3fa45f09cd9f2b44f9f4e69ce
+2026-04-28T16:04:51.9515892Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: f0d0a659901364ba
+2026-04-28T16:04:51.9516481Z   GITHUB_AW_OTEL_JOB_START_MS: 1777392291744
+2026-04-28T16:04:51.9516975Z ##[endgroup]
+2026-04-28T16:04:52.6587895Z Syncing repository: strawgate/agentic-workflows
+2026-04-28T16:04:52.6590549Z ##[group]Getting Git version info
+2026-04-28T16:04:52.6591831Z Working directory is '/home/runner/work/agentic-workflows/agentic-workflows'
+2026-04-28T16:04:52.6592953Z [command]/usr/bin/git version
+2026-04-28T16:04:52.6593414Z git version 2.53.0
+2026-04-28T16:04:52.6594839Z ##[endgroup]
+2026-04-28T16:04:52.6599220Z Temporarily overriding HOME='/home/runner/work/_temp/2e84b115-6f91-4d19-82cd-668ccf34a368' before making global git config changes
+2026-04-28T16:04:52.6600566Z Adding repository directory to the temporary git global config as a safe directory
+2026-04-28T16:04:52.6601763Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/agentic-workflows/agentic-workflows
+2026-04-28T16:04:52.6603440Z Deleting the contents of '/home/runner/work/agentic-workflows/agentic-workflows'
+2026-04-28T16:04:52.6604484Z ##[group]Initializing the repository
+2026-04-28T16:04:52.6605195Z [command]/usr/bin/git init /home/runner/work/agentic-workflows/agentic-workflows
+2026-04-28T16:04:52.6606114Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-04-28T16:04:52.6606996Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-04-28T16:04:52.6608292Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-04-28T16:04:52.6609202Z hint: call:
+2026-04-28T16:04:52.6609583Z hint:
+2026-04-28T16:04:52.6610013Z hint: 	git config --global init.defaultBranch <name>
+2026-04-28T16:04:52.6610563Z hint:
+2026-04-28T16:04:52.6611080Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-04-28T16:04:52.6611926Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-04-28T16:04:52.6612591Z hint:
+2026-04-28T16:04:52.6612940Z hint: 	git branch -m <name>
+2026-04-28T16:04:52.6613358Z hint:
+2026-04-28T16:04:52.6613913Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-04-28T16:04:52.6614938Z Initialized empty Git repository in /home/runner/work/agentic-workflows/agentic-workflows/.git/
+2026-04-28T16:04:52.6616513Z [command]/usr/bin/git remote add origin https://github.com/strawgate/agentic-workflows
+2026-04-28T16:04:52.6617983Z ##[endgroup]
+2026-04-28T16:04:52.6618876Z ##[group]Disabling automatic garbage collection
+2026-04-28T16:04:52.6619481Z [command]/usr/bin/git config --local gc.auto 0
+2026-04-28T16:04:52.6620704Z ##[endgroup]
+2026-04-28T16:04:52.6621325Z ##[group]Setting up auth
+2026-04-28T16:04:52.6621770Z Removing SSH command configuration
+2026-04-28T16:04:52.6622450Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-28T16:04:52.6624358Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-28T16:04:52.6626092Z Removing HTTP extra header
+2026-04-28T16:04:52.6626880Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-28T16:04:52.6629330Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-28T16:04:52.6631446Z Removing includeIf entries pointing to credentials config files
+2026-04-28T16:04:52.6632324Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-28T16:04:52.6634016Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-28T16:04:52.6636515Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-04-28T16:04:52.6639400Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git.path /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.6642291Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.6644927Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.6647316Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.6649423Z ##[endgroup]
+2026-04-28T16:04:52.6650042Z ##[group]Fetching the repository
+2026-04-28T16:04:52.6651360Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --filter=blob:none --depth=1 origin +c3d3c9830258a816314321f7fdea471aa672901c:refs/remotes/origin/main
+2026-04-28T16:04:52.6652769Z From https://github.com/strawgate/agentic-workflows
+2026-04-28T16:04:52.6653469Z  * [new ref]         c3d3c9830258a816314321f7fdea471aa672901c -> origin/main
+2026-04-28T16:04:52.6654927Z [command]/usr/bin/git branch --list --remote origin/main
+2026-04-28T16:04:52.6655494Z   origin/main
+2026-04-28T16:04:52.6656436Z [command]/usr/bin/git rev-parse refs/remotes/origin/main
+2026-04-28T16:04:52.6657029Z c3d3c9830258a816314321f7fdea471aa672901c
+2026-04-28T16:04:52.6658224Z ##[endgroup]
+2026-04-28T16:04:52.6659056Z ##[group]Determining the checkout info
+2026-04-28T16:04:52.6659764Z ##[endgroup]
+2026-04-28T16:04:52.6660391Z ##[group]Setting up sparse checkout
+2026-04-28T16:04:52.6661172Z [command]/usr/bin/git sparse-checkout set .github .agents .claude .codex .crush .gemini .opencode
+2026-04-28T16:04:52.6662679Z ##[endgroup]
+2026-04-28T16:04:52.6663288Z ##[group]Checking out the ref
+2026-04-28T16:04:52.6663970Z [command]/usr/bin/git checkout --progress --force -B main refs/remotes/origin/main
+2026-04-28T16:04:52.9254950Z Switched to a new branch 'main'
+2026-04-28T16:04:52.9255581Z branch 'main' set up to track 'origin/main'.
+2026-04-28T16:04:52.9257118Z ##[endgroup]
+2026-04-28T16:04:52.9258145Z [command]/usr/bin/git log -1 --format=%H
+2026-04-28T16:04:52.9259241Z c3d3c9830258a816314321f7fdea471aa672901c
+2026-04-28T16:04:52.9260641Z ##[group]Removing auth
+2026-04-28T16:04:52.9261115Z Removing SSH command configuration
+2026-04-28T16:04:52.9262409Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-04-28T16:04:52.9264698Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-04-28T16:04:52.9266698Z Removing HTTP extra header
+2026-04-28T16:04:52.9267574Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-04-28T16:04:52.9270762Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-04-28T16:04:52.9273429Z Removing includeIf entries pointing to credentials config files
+2026-04-28T16:04:52.9274512Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-04-28T16:04:52.9275901Z includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git.path
+2026-04-28T16:04:52.9277173Z includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git/worktrees/*.path
+2026-04-28T16:04:52.9278629Z includeif.gitdir:/github/workspace/.git.path
+2026-04-28T16:04:52.9282318Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-04-28T16:04:52.9284188Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git.path
+2026-04-28T16:04:52.9285444Z /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9287644Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git.path /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9290590Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git/worktrees/*.path
+2026-04-28T16:04:52.9291901Z /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9294179Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/agentic-workflows/agentic-workflows/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9296449Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-04-28T16:04:52.9297468Z /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9299674Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9302079Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-04-28T16:04:52.9303156Z /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9305164Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config
+2026-04-28T16:04:52.9307397Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-04-28T16:04:52.9309498Z Removing credentials config '/home/runner/work/_temp/git-credentials-bdf25339-db2f-4b29-a29e-37d75e6b0200.config'
+2026-04-28T16:04:52.9310927Z ##[endgroup]
