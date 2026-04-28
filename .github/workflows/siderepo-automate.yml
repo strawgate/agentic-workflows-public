@@ -43,8 +43,8 @@ jobs:
 
         ### Repository Analysis
         ✅ **Code Quality:** Monitoring active
-        ✅ **Issues:** $(gh issue list ${{ inputs.repos != 'strawgate/agentic-workflows' && "--repo ${{ inputs.repos }}" || "" }} --limit 1000 --json number | jq length) total
-        ✅ **PRs:** $(gh pr list ${{ inputs.repos != 'strawgate/agentic-workflows' && "--repo ${{ inputs.repos }}" || "" }} --limit 100 --json number | jq length) active
+        ✅ **Issues:** $(gh issue list --limit 1000 --json number | jq length) total
+        ✅ **PRs:** $(gh pr list --limit 100 --json number | jq length) active
         ✅ **Security:** All checks passing
 
         *Automated daily report via SideRepoOps workflow*
