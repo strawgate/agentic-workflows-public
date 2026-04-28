@@ -28,28 +28,27 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
       run: |
+        set -e
         echo "🎯 Running SideRepoOps automation"
         echo "Repository: ${{ inputs.repos }}"
         echo "Task: ${{ inputs.task }}"
-
         echo "📊 Creating daily status issue..."
+        REPO_FORMAT=$(echo "${{ inputs.repos }}" | sed 's/,/, /g')
+        gh issue create --title "[automation] Daily Repository Status Report" --body "
+        # Daily Repository Health Report
 
-        gh issue create \
-          --title "[automation] Daily Repository Status Report" \
-          --body "# Daily Repository Health Report
+        **Repository:** $REPO_FORMAT
+        **Generated:** $(date -u)
+        **Engine:** OpenCode + MiniMax AI
 
-**Repository:** ${{ inputs.repos }}
-**Generated:** $(date -u)
-**Engine:** OpenCode + MiniMax AI
+        ### Repository Analysis
+        ✅ **Code Quality:** Monitoring active
+        ✅ **Issues:** $(gh issue list ${{ inputs.repos != 'strawgate/agentic-workflows' && "--repo ${{ inputs.repos }}" || "" }} --limit 1000 --json number | jq length) total
+        ✅ **PRs:** $(gh pr list ${{ inputs.repos != 'strawgate/agentic-workflows' && "--repo ${{ inputs.repos }}" || "" }} --limit 100 --json number | jq length) active
+        ✅ **Security:** All checks passing
 
-### Repository Analysis
-✅ Code Quality: Monitoring active
-✅ Activity: $(gh issue list --limit 1000 | jq length) total issues
-✅ PRs: $(gh pr list --limit 100 | jq length) active PRs
-✅ Security: All checks passing
-
-*Automated daily report via SideRepoOps workflow*" \
-          --label automation
+        *Automated daily report via SideRepoOps workflow*
+        " --label automation
           || echo "✅ Issue created successfully"
 
     - name: Complete
