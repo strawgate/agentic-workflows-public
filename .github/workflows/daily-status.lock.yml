@@ -55,9 +55,9 @@ jobs:
             --title "[automation] Daily Repository Status - $(date +%Y-%m-%d)" \
             --body "## 📊 Daily Repository Health Report
 
-**Repository:** ${{ steps.analyze.outputs.repository }}
-**Generated:** $(date -u)
-**Engine:** OpenCode (Simulated) + MiniMax API
+Repository: ${{ steps.analyze.outputs.repository }}
+Generated: $(date -u)
+Engine: OpenCode (Simulated) + MiniMax API
 
 ### Repository Analysis
 ✅ **Code Quality:** Monitoring active
