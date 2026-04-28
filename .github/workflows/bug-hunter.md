@@ -21,6 +21,12 @@ permissions:
   contents: read
   issues: read
 
+github-app:
+  client-id: ${{ vars.APP_ID }}
+  private-key: ${{ secrets.APP_PRIVATE_KEY }}
+  owner: "strawgate"
+  repositories: ["*"]
+
 engine:
   id: claude
   model: anthropic/claude-3-5-sonnet-20241022
@@ -31,17 +37,8 @@ tools:
   github:
     mode: remote
     allowed: [list_issues, create_issue, list_pull_requests]
-    github-app:
-      client-id: ${{ vars.APP_ID }}
-      private-key: ${{ secrets.APP_PRIVATE_KEY }}
-      owner: "strawgate"
 
 safe-outputs:
-  github-app:
-    client-id: ${{ vars.APP_ID }}
-    private-key: ${{ secrets.APP_PRIVATE_KEY }}
-    owner: "strawgate"
-    repositories: ["*"]
   create-issue:
     title-prefix: "[bug-hunter] "
     labels: [bug, automated]
