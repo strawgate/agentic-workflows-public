@@ -1,20 +1,17 @@
 name: test-github-app
 on:
   workflow_dispatch:
+
 permissions:
   contents: read
   issues: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: ${environment}-{context}
     steps:
-    - name: Setup Node
-      uses: actions/setup-node@v4
-      with: node-version: 20
-    - name: Test GitHub App auth
+    - uses: actions/checkout@v4
+    - name: Test secrets
       run: |
-        echo "TOKEN LENGTH: ${{ secrets.APP_PRIVATE_KEY }}"
-        echo "Testing basic gh command..."
-        gh --version
-        echo "Token available: $(if [ -n \"${{ secrets.APP_PRIVATE_KEY }}\" ]; then echo 'YES'; else echo 'NO'; fi)"
+        echo "APP_PRIVATE_KEY length: $(echo '${{ secrets.APP_PRIVATE_KEY }}' | wc -c)"
+        echo "MINIMAX_API_KEY present: $(if [ -z '${{ secrets.MINIMAX_API_KEY }}' ]; then echo 'NO'; else echo 'YES'; fi)"
