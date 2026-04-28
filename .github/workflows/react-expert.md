@@ -65,48 +65,79 @@ Audit React and TypeScript code for framework-specific anti-patterns and best pr
 
 ## React Anti-Patterns to Look For
 
-### Critical (Performance & Correctness)
+### Critical (Accessibility & Correctness)
 
-1. **Missing Key Props in Lists**
+1. **onClick on Non-Interactive Elements**
+   - `onClick` on `<div>`, `<span>`, or `<Box>` without `component="button"`
+   - Use `<Button>`, `<IconButton>`, or `<ListItemButton>` for keyboard accessibility
+   - Non-interactive elements cannot be focused or activated via keyboard
+
+2. **Missing Key Props in Lists**
    - Map functions without `key` prop
    - Using index as key when items can be reordered
    - Keys that aren't stable across renders
 
-2. **Inline Function Definitions in JSX**
+3. **Inline Function Definitions in JSX**
    - `<button onClick={() => handleClick()}>` in render
    - Creates new function instance on every render
    - Extract to useCallback or define outside component
 
-3. **Props Spreading Without Typing**
+4. **Hardcoded Colors**
+   - Hardcoded hex/rgb/rgba colors in sx props or style objects
+   - Must use theme tokens (e.g., `'primary.main'`, `'text.secondary'`)
+   - Creates inconsistent theming and breaks dark mode
+
+5. **Props Spreading Without Typing**
    - `{...props}` spreading untyped props
    - Spreading known props that shouldn't be forwarded
    - Missing prop restrictions
 
-4. **useEffect Dependencies**
+6. **useEffect Dependencies**
    - Missing dependencies in useEffect deps array
    - Stale closure issues
    - useEffect running on every render
 
 ### High Priority
 
-5. **State Updates from Props**
+7. **Empty Data Without EmptyState**
+   - Conditional rendering for `data.length === 0`, `!data`, `!results`
+   - Returns null or blank div instead of `<EmptyState />`
+   - Creates blank rectangles in UI
+
+8. **State Updates from Props**
    - Copying prop to local state without synchronization
    - `useState(initialValue)` where initialValue comes from props
 
-6. **Context Misuse**
+9. **Context Misuse**
    - Creating new objects/arrays in render for context value
    - Context provider value changes on every render
    - Not splitting context by update frequency
 
-7. **Component Composition Issues**
-   - Props drilling more than 2-3 levels
-   - Not using compound components when appropriate
-   - Wrapper components that just pass through children
+10. **Component Composition Issues**
+    - Props drilling more than 2-3 levels
+    - Not using compound components when appropriate
+    - Wrapper components that just pass through children
 
-8. **Side Effects in Render**
-   - API calls in render body
-   - State updates in render
-   - Navigation in render
+11. **Side Effects in Render**
+    - API calls in render body
+    - State updates in render
+    - Navigation in render
+
+12. **MUI Barrel Imports**
+    - Importing from `@mui/material` or `@mui/icons-material` barrel
+    - Causes tree-shaking issues
+    - Use specific path imports: `@mui/material/Button`
+
+### Medium Priority (Design System)
+
+13. **Non-Standard Spacing**
+    - Using arbitrary numeric values in sx props
+    - Must use approved SpaceTokens: 0, 0.5, 1, 1.5, 2, 2.5, 3, 4, 6
+
+14. **Non-Standard Typography Variants**
+    - Using non-approved Typography variants
+    - Approved variants: h3, h5, h6, subtitle1, body1, body2, caption
+    - Creates inconsistent type scale
 
 ## TypeScript Anti-Patterns
 
