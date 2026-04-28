@@ -12,16 +12,15 @@ on:
 
 permissions:
   contents: read
-  issues: write
+  issues: read
   pull-requests: read
 
 engine:
   id: opencode
   version: 0.1.0
-  model: claude-3-5-sonnet-20241022
+  model: anthropic/claude-3-5-sonnet-20241022
   env:
     ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic
-    ANTHROPIC_AUTH_TOKEN: ${{ secrets.MINIMAX_API_KEY }}
 
 tools:
   github:
