@@ -17,7 +17,6 @@ permissions:
 
 engine:
   id: claude
-  version: 0.1.0
   model: claude-3-5-sonnet-20241022
   env:
     ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic
