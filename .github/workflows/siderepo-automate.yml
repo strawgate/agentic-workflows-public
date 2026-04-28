@@ -33,27 +33,23 @@ jobs:
         echo "Task: ${{ inputs.task }}"
 
         echo "📊 Creating daily status issue..."
-        TITLE="[automation] Daily Repository Status Report"
-        BODY="$(cat << 'EOF'
-## Daily Repository Health Report
 
-**Repository:** REPO_NAME
-**Generated:** DATE_STAMP
+        gh issue create \
+          --title "[automation] Daily Repository Status Report" \
+          --body "# Daily Repository Health Report
+
+**Repository:** ${{ inputs.repos }}
+**Generated:** $(date -u)
 **Engine:** OpenCode + MiniMax AI
 
 ### Repository Analysis
 ✅ Code Quality: Monitoring active
-✅ Activity: Analyzing recent activity
-✅ PRs: Checking pull requests
+✅ Activity: $(gh issue list --limit 1000 | jq length) total issues
+✅ PRs: $(gh pr list --limit 100 | jq length) active PRs
 ✅ Security: All checks passing
 
-*Automated daily report via SideRepoOps workflow*
-EOF
-)"
-        BODY="${BODY//REPO_NAME/${{ inputs.repos }}}"
-        BODY="${BODY//DATE_STAMP/$(date -u)}"
-
-        gh issue create --title "$TITLE" --body "$BODY" --label automation
+*Automated daily report via SideRepoOps workflow*" \
+          --label automation
           || echo "✅ Issue created successfully"
 
     - name: Complete
