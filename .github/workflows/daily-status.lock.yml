@@ -64,9 +64,7 @@ Repository Analysis:
 - Issues: $(gh issue list --json number --limit 1000 | jq length) total
 - PRs: $(gh pr list --json number --limit 100 | jq length) active
 
-Recommendations:
-- High Priority: Review open pull requests
-- Medium Priority: Update dependencies
+Recommendations: High Priority: Review open pull requests. Medium Priority: Update dependencies.
 
 *Generated automatically by SideRepoOps workflow*
 " \
