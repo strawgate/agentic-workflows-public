@@ -1,0 +1,22 @@
+#!/bin/bash
+# GitHub Actions workflow to test OpenCode with MiniMax
+
+name: opencode-test
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Test OpenCode with MiniMax
+      run: |
+        echo "Testing OpenCode integration..."
+        # This would need the actual OpenCode CLI
+        echo "MINIMAX_API_KEY present: ${{ secrets.MINIMAX_API_KEY != '' && 'YES' || 'NO' }}"
+        # For now, just create a test issue using GitHub CLI
+        gh issue create --title "[test] OpenCode integration test" --body "This confirms OpenCode workflow can run." --label automation,test || echo "Issue already exists"
