@@ -48,4 +48,4 @@ jobs:
         github-app-client-id: ${{ vars.APP_ID }}
         github-app-private-key: ${{ secrets.APP_PRIVATE_KEY }}
         github-app-owner: strawgate-llc
-        github-app-repositories: [agentics]
+        github-app-repositories: [agentic-workflows]
