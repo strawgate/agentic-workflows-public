@@ -54,29 +54,25 @@ jobs:
           gh issue create \
             --title "[automation] Daily Repository Status - $(date +%Y-%m-%d)" \
             --body "
-## 📊 Daily Repository Health Report
+## Daily Repository Health Report
 
 Repository: ${{ steps.analyze.outputs.repository }}
 Generated: $(date -u)
 Engine: OpenCode (Simulated) + MiniMax API
 
 ### Repository Analysis
-✅ Code Quality: Monitoring active
-✅ Recent Activity: Recent commits detected
-✅ Open Issues: $(gh issue list --json number --limit 1000 | jq length) total
-✅ Open PRs: $(gh pr list --json number --limit 100 | jq length) total
+- Code Quality: Monitoring active
+- Issues: $(gh issue list --json number --limit 1000 | jq length) total
+- PRs: $(gh pr list --json number --limit 100 | jq length) active
 
 ### Recommendations
-🔴 High Priority
-- Review open pull requests for potential issues
+High Priority:
+- Review open pull requests
 
-🟡 Medium Priority  
-- Update dependencies where needed
+Medium Priority:
+- Update dependencies
 
-🟢 Low Priority
-- Continue daily health monitoring
-
-*This report generated automatically by SideRepoOps workflow*
+*Generated automatically by SideRepoOps workflow*
 " \
             --label automation
             || echo "✅ Daily status issue created successfully"
