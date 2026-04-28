@@ -32,11 +32,17 @@ tools:
   github:
     mode: remote
     allowed: [list_issues, create_issue]
+    github-app:
+      client-id: ${{ vars.APP_ID }}
+      private-key: ${{ secrets.APP_PRIVATE_KEY }}
+      owner: "strawgate"
 
 safe-outputs:
   github-app:
     client-id: ${{ vars.APP_ID }}
     private-key: ${{ secrets.APP_PRIVATE_KEY }}
+    owner: "strawgate"
+    repositories: ["*"]
   create-issue:
     title-prefix: "[docs-patrol] "
     labels: [documentation, automated]
