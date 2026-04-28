@@ -18,10 +18,9 @@ on:
 permissions:
   contents: read
   issues: write
-  pull-requests: read
 
 jobs:
-  daily-status:
+  automation:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
