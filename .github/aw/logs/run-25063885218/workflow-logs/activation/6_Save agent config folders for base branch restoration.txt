@@ -1,0 +1,79 @@
+﻿2026-04-28T16:04:52.9361494Z ##[group]Run bash "${RUNNER_TEMP}/gh-aw/actions/save_base_github_folders.sh"
+2026-04-28T16:04:52.9362405Z [36;1mbash "${RUNNER_TEMP}/gh-aw/actions/save_base_github_folders.sh"[0m
+2026-04-28T16:04:52.9366955Z shell: /usr/bin/bash -e {0}
+2026-04-28T16:04:52.9367408Z env:
+2026-04-28T16:04:52.9374419Z   GH_AW_MODEL_MULTIPLIERS: {
+  "version": "1",
+  "description": "Effective Tokens (ET) computation data per the gh-aw Effective Tokens Specification v0.2.0. Token class weights are applied first to normalize across token classes, then the per-model multiplier scales the result relative to the reference model.",
+  "reference_model": "claude-sonnet-4.5",
+  "token_class_weights": {
+    "input": 1.0,
+    "cached_input": 0.1,
+    "output": 4.0,
+    "reasoning": 4.0,
+    "cache_write": 1.0
+  },
+  "multipliers": {
+    "claude-haiku-4.5": 0.1,
+    "claude-3-5-haiku": 0.1,
+    "claude-3-haiku": 0.1,
+    "claude-sonnet-4.5": 1.0,
+    "claude-sonnet-4.6": 1.0,
+    "claude-3-5-sonnet": 1.0,
+    "claude-3-7-sonnet": 1.0,
+    "claude-3-sonnet": 1.0,
+    "claude-opus-4.5": 5.0,
+    "claude-opus-4.6": 5.0,
+    "claude-3-5-opus": 5.0,
+    "claude-3-opus": 5.0,
+    "gpt-4o": 1.0,
+    "gpt-4o-mini": 0.1,
+    "gpt-4.1": 1.0,
+    "gpt-4.1-2025-04-14": 1.0,
+    "gpt-41-copilot": 1.0,
+    "gpt-4.1-mini": 0.1,
+    "gpt-4.1-nano": 0.05,
+    "gpt-4-turbo": 1.0,
+    "gpt-4": 1.0,
+    "gpt-5": 1.0,
+    "gpt-5-mini": 0,
+    "gpt-5.1": 1.0,
+    "gpt-5.1-codex": 1.0,
+    "gpt-5.1-codex-mini": 0.33,
+    "gpt-5.1-codex-max": 1.0,
+    "gpt-5.2": 1.0,
+    "gpt-5.2-codex": 1.0,
+    "gpt-5.3-codex": 1.0,
+    "gpt-5.4": 1.0,
+    "gpt-5.4-mini": 0.33,
+    "o1": 3.0,
+    "o1-mini": 0.5,
+    "o1-pro": 10.0,
+    "o3": 3.0,
+    "o3-mini": 0.5,
+    "o4-mini": 0.5,
+    "gemini-2.5-pro": 1.0,
+    "gemini-2.5-flash": 0.2,
+    "gemini-2.0-flash": 0.1,
+    "gemini-1.5-pro": 1.0,
+    "gemini-1.5-flash": 0.1
+  }
+}
+2026-04-28T16:04:52.9382460Z   GITHUB_AW_OTEL_TRACE_ID: c7c247f3fa45f09cd9f2b44f9f4e69ce
+2026-04-28T16:04:52.9383116Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: f0d0a659901364ba
+2026-04-28T16:04:52.9383682Z   GITHUB_AW_OTEL_JOB_START_MS: 1777392291744
+2026-04-28T16:04:52.9384380Z   GH_AW_AGENT_FOLDERS: .agents .claude .codex .crush .gemini .github .opencode
+2026-04-28T16:04:52.9385250Z   GH_AW_AGENT_FILES: .crush.json AGENTS.md CLAUDE.md GEMINI.md opencode.jsonc
+2026-04-28T16:04:52.9385920Z ##[endgroup]
+2026-04-28T16:04:52.9473206Z .agents not found in workspace, skipping
+2026-04-28T16:04:52.9473837Z .claude not found in workspace, skipping
+2026-04-28T16:04:52.9474406Z .codex not found in workspace, skipping
+2026-04-28T16:04:52.9474951Z .crush not found in workspace, skipping
+2026-04-28T16:04:52.9475475Z .gemini not found in workspace, skipping
+2026-04-28T16:04:52.9507338Z Saved .github to /tmp/gh-aw/base/.github
+2026-04-28T16:04:52.9509369Z .opencode not found in workspace, skipping
+2026-04-28T16:04:52.9510148Z .crush.json not found in workspace, skipping
+2026-04-28T16:04:52.9510910Z AGENTS.md not found in workspace, skipping
+2026-04-28T16:04:52.9511566Z CLAUDE.md not found in workspace, skipping
+2026-04-28T16:04:52.9512222Z GEMINI.md not found in workspace, skipping
+2026-04-28T16:04:52.9538771Z opencode.jsonc not found in workspace, skipping

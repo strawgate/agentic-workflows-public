@@ -1,0 +1,132 @@
+﻿2026-04-28T16:04:51.7667493Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-04-28T16:04:51.7668338Z with:
+2026-04-28T16:04:51.7670777Z   script: const { setupGlobals } = require('/home/runner/work/_temp/gh-aw/actions/setup_globals.cjs');
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require('/home/runner/work/_temp/gh-aw/actions/generate_aw_info.cjs');
+await main(core, context);
+
+2026-04-28T16:04:51.7672916Z   github-token: ***
+2026-04-28T16:04:51.7673314Z   debug: false
+2026-04-28T16:04:51.7673715Z   user-agent: actions/github-script
+2026-04-28T16:04:51.7674205Z   result-encoding: json
+2026-04-28T16:04:51.7674614Z   retries: 0
+2026-04-28T16:04:51.7675022Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-04-28T16:04:51.7675798Z env:
+2026-04-28T16:04:51.7683269Z   GH_AW_MODEL_MULTIPLIERS: {
+  "version": "1",
+  "description": "Effective Tokens (ET) computation data per the gh-aw Effective Tokens Specification v0.2.0. Token class weights are applied first to normalize across token classes, then the per-model multiplier scales the result relative to the reference model.",
+  "reference_model": "claude-sonnet-4.5",
+  "token_class_weights": {
+    "input": 1.0,
+    "cached_input": 0.1,
+    "output": 4.0,
+    "reasoning": 4.0,
+    "cache_write": 1.0
+  },
+  "multipliers": {
+    "claude-haiku-4.5": 0.1,
+    "claude-3-5-haiku": 0.1,
+    "claude-3-haiku": 0.1,
+    "claude-sonnet-4.5": 1.0,
+    "claude-sonnet-4.6": 1.0,
+    "claude-3-5-sonnet": 1.0,
+    "claude-3-7-sonnet": 1.0,
+    "claude-3-sonnet": 1.0,
+    "claude-opus-4.5": 5.0,
+    "claude-opus-4.6": 5.0,
+    "claude-3-5-opus": 5.0,
+    "claude-3-opus": 5.0,
+    "gpt-4o": 1.0,
+    "gpt-4o-mini": 0.1,
+    "gpt-4.1": 1.0,
+    "gpt-4.1-2025-04-14": 1.0,
+    "gpt-41-copilot": 1.0,
+    "gpt-4.1-mini": 0.1,
+    "gpt-4.1-nano": 0.05,
+    "gpt-4-turbo": 1.0,
+    "gpt-4": 1.0,
+    "gpt-5": 1.0,
+    "gpt-5-mini": 0,
+    "gpt-5.1": 1.0,
+    "gpt-5.1-codex": 1.0,
+    "gpt-5.1-codex-mini": 0.33,
+    "gpt-5.1-codex-max": 1.0,
+    "gpt-5.2": 1.0,
+    "gpt-5.2-codex": 1.0,
+    "gpt-5.3-codex": 1.0,
+    "gpt-5.4": 1.0,
+    "gpt-5.4-mini": 0.33,
+    "o1": 3.0,
+    "o1-mini": 0.5,
+    "o1-pro": 10.0,
+    "o3": 3.0,
+    "o3-mini": 0.5,
+    "o4-mini": 0.5,
+    "gemini-2.5-pro": 1.0,
+    "gemini-2.5-flash": 0.2,
+    "gemini-2.0-flash": 0.1,
+    "gemini-1.5-pro": 1.0,
+    "gemini-1.5-flash": 0.1
+  }
+}
+2026-04-28T16:04:51.7692947Z   GITHUB_AW_OTEL_TRACE_ID: c7c247f3fa45f09cd9f2b44f9f4e69ce
+2026-04-28T16:04:51.7693638Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: f0d0a659901364ba
+2026-04-28T16:04:51.7694200Z   GITHUB_AW_OTEL_JOB_START_MS: 1777392291744
+2026-04-28T16:04:51.7694722Z   GH_AW_INFO_ENGINE_ID: opencode
+2026-04-28T16:04:51.7695194Z   GH_AW_INFO_ENGINE_NAME: OpenCode
+2026-04-28T16:04:51.7695754Z   GH_AW_INFO_MODEL: anthropic/claude-3-5-sonnet-20241022
+2026-04-28T16:04:51.7696321Z   GH_AW_INFO_VERSION: 0.1.0
+2026-04-28T16:04:51.7696781Z   GH_AW_INFO_AGENT_VERSION: 0.1.0
+2026-04-28T16:04:51.7697247Z   GH_AW_INFO_CLI_VERSION: v0.71.1
+2026-04-28T16:04:51.7698028Z   GH_AW_INFO_WORKFLOW_NAME: Daily Repository Status Workflow (SideRepoOps with OpenCode + MiniMax)
+2026-04-28T16:04:51.7699123Z   GH_AW_INFO_EXPERIMENTAL: true
+2026-04-28T16:04:51.7699622Z   GH_AW_INFO_SUPPORTS_TOOLS_ALLOWLIST: false
+2026-04-28T16:04:51.7700148Z   GH_AW_INFO_STAGED: false
+2026-04-28T16:04:51.7700595Z   GH_AW_INFO_ALLOWED_DOMAINS: ["defaults"]
+2026-04-28T16:04:51.7701268Z   GH_AW_INFO_FIREWALL_ENABLED: false
+2026-04-28T16:04:51.7701749Z   GH_AW_INFO_AWF_VERSION: 
+2026-04-28T16:04:51.7702187Z   GH_AW_INFO_AWMG_VERSION: 
+2026-04-28T16:04:51.7702646Z   GH_AW_INFO_FIREWALL_TYPE: squid
+2026-04-28T16:04:51.7703122Z   GH_AW_COMPILED_STRICT: true
+2026-04-28T16:04:51.7703554Z ##[endgroup]
+2026-04-28T16:04:51.8958244Z Starting context variable validation...
+2026-04-28T16:04:51.8965851Z ✓ github.event.repository.id is valid: 1223582292
+2026-04-28T16:04:51.8969856Z ✓ github.event.sender.id is valid: 6384545
+2026-04-28T16:04:51.8973735Z Validated 2 context variables
+2026-04-28T16:04:51.8976630Z ✅ All context variables validated successfully
+2026-04-28T16:04:51.8981930Z Lockdown mode not explicitly enabled, skipping validation
+2026-04-28T16:04:51.8984908Z Repository visibility: unknown
+2026-04-28T16:04:51.8987536Z Compiled with strict mode: true
+2026-04-28T16:04:51.9051703Z Generated aw_info.json at: /tmp/gh-aw/aw_info.json
+2026-04-28T16:04:51.9057037Z {
+2026-04-28T16:04:51.9057777Z   "engine_id": "opencode",
+2026-04-28T16:04:51.9059060Z   "engine_name": "OpenCode",
+2026-04-28T16:04:51.9059868Z   "model": "anthropic/claude-3-5-sonnet-20241022",
+2026-04-28T16:04:51.9060673Z   "version": "0.1.0",
+2026-04-28T16:04:51.9061231Z   "agent_version": "0.1.0",
+2026-04-28T16:04:51.9062188Z   "workflow_name": "Daily Repository Status Workflow (SideRepoOps with OpenCode + MiniMax)",
+2026-04-28T16:04:51.9063500Z   "experimental": true,
+2026-04-28T16:04:51.9064075Z   "supports_tools_allowlist": false,
+2026-04-28T16:04:51.9064704Z   "run_id": 25063885218,
+2026-04-28T16:04:51.9065237Z   "run_number": 32,
+2026-04-28T16:04:51.9065752Z   "run_attempt": "1",
+2026-04-28T16:04:51.9066336Z   "repository": "strawgate/agentic-workflows",
+2026-04-28T16:04:51.9067896Z   "ref": "refs/heads/main",
+2026-04-28T16:04:51.9070820Z   "sha": "c3d3c9830258a816314321f7fdea471aa672901c",
+2026-04-28T16:04:51.9071502Z   "actor": "strawgate",
+2026-04-28T16:04:51.9071967Z   "event_name": "workflow_dispatch",
+2026-04-28T16:04:51.9072509Z   "target_repo": "",
+2026-04-28T16:04:51.9072940Z   "staged": false,
+2026-04-28T16:04:51.9073365Z   "allowed_domains": [
+2026-04-28T16:04:51.9073805Z     "defaults"
+2026-04-28T16:04:51.9074189Z   ],
+2026-04-28T16:04:51.9074583Z   "firewall_enabled": false,
+2026-04-28T16:04:51.9075071Z   "awf_version": "",
+2026-04-28T16:04:51.9075503Z   "awmg_version": "",
+2026-04-28T16:04:51.9075944Z   "steps": {
+2026-04-28T16:04:51.9076332Z     "firewall": "squid"
+2026-04-28T16:04:51.9076763Z   },
+2026-04-28T16:04:51.9077155Z   "created_at": "2026-04-28T16:04:51.899Z",
+2026-04-28T16:04:51.9077708Z   "cli_version": "v0.71.1"
+2026-04-28T16:04:51.9078170Z }
+2026-04-28T16:04:51.9114314Z Generated workflow overview in step summary

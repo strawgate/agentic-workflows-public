@@ -1,0 +1,75 @@
+﻿2026-04-28T16:06:13.4246622Z ##[group]Run actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3
+2026-04-28T16:06:13.4247769Z with:
+2026-04-28T16:06:13.4249520Z   client-id: 3531806
+2026-04-28T16:06:13.4267907Z   private-key: ***
+2026-04-28T16:06:13.4269675Z   owner: strawgate
+2026-04-28T16:06:13.4270456Z   repositories: agentic-workflows
+2026-04-28T16:06:13.4271205Z   github-api-url: https://api.github.com
+2026-04-28T16:06:13.4273001Z   permission-contents: read
+2026-04-28T16:06:13.4273686Z   permission-issues: write
+2026-04-28T16:06:13.4274347Z   skip-token-revoke: false
+2026-04-28T16:06:13.4276223Z env:
+2026-04-28T16:06:13.4286859Z   GH_AW_MODEL_MULTIPLIERS: {
+  "version": "1",
+  "description": "Effective Tokens (ET) computation data per the gh-aw Effective Tokens Specification v0.2.0. Token class weights are applied first to normalize across token classes, then the per-model multiplier scales the result relative to the reference model.",
+  "reference_model": "claude-sonnet-4.5",
+  "token_class_weights": {
+    "input": 1.0,
+    "cached_input": 0.1,
+    "output": 4.0,
+    "reasoning": 4.0,
+    "cache_write": 1.0
+  },
+  "multipliers": {
+    "claude-haiku-4.5": 0.1,
+    "claude-3-5-haiku": 0.1,
+    "claude-3-haiku": 0.1,
+    "claude-sonnet-4.5": 1.0,
+    "claude-sonnet-4.6": 1.0,
+    "claude-3-5-sonnet": 1.0,
+    "claude-3-7-sonnet": 1.0,
+    "claude-3-sonnet": 1.0,
+    "claude-opus-4.5": 5.0,
+    "claude-opus-4.6": 5.0,
+    "claude-3-5-opus": 5.0,
+    "claude-3-opus": 5.0,
+    "gpt-4o": 1.0,
+    "gpt-4o-mini": 0.1,
+    "gpt-4.1": 1.0,
+    "gpt-4.1-2025-04-14": 1.0,
+    "gpt-41-copilot": 1.0,
+    "gpt-4.1-mini": 0.1,
+    "gpt-4.1-nano": 0.05,
+    "gpt-4-turbo": 1.0,
+    "gpt-4": 1.0,
+    "gpt-5": 1.0,
+    "gpt-5-mini": 0,
+    "gpt-5.1": 1.0,
+    "gpt-5.1-codex": 1.0,
+    "gpt-5.1-codex-mini": 0.33,
+    "gpt-5.1-codex-max": 1.0,
+    "gpt-5.2": 1.0,
+    "gpt-5.2-codex": 1.0,
+    "gpt-5.3-codex": 1.0,
+    "gpt-5.4": 1.0,
+    "gpt-5.4-mini": 0.33,
+    "o1": 3.0,
+    "o1-mini": 0.5,
+    "o1-pro": 10.0,
+    "o3": 3.0,
+    "o3-mini": 0.5,
+    "o4-mini": 0.5,
+    "gemini-2.5-pro": 1.0,
+    "gemini-2.5-flash": 0.2,
+    "gemini-2.0-flash": 0.1,
+    "gemini-1.5-pro": 1.0,
+    "gemini-1.5-flash": 0.1
+  }
+}
+2026-04-28T16:06:13.4298142Z   GITHUB_AW_OTEL_TRACE_ID: c7c247f3fa45f09cd9f2b44f9f4e69ce
+2026-04-28T16:06:13.4300220Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: c483720f123396f8
+2026-04-28T16:06:13.4301036Z   GITHUB_AW_OTEL_JOB_START_MS: 1777392373373
+2026-04-28T16:06:13.4302824Z ##[endgroup]
+2026-04-28T16:06:13.5564083Z Inputs 'owner' and 'repositories' are set. Creating token for the following repositories:
+2026-04-28T16:06:14.0652320Z       
+2026-04-28T16:06:14.0653241Z - strawgate/agentic-workflows

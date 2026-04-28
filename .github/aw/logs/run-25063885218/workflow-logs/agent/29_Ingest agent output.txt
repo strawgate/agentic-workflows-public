@@ -1,0 +1,97 @@
+﻿2026-04-28T16:05:58.2974775Z ##[group]Run actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3
+2026-04-28T16:05:58.2975483Z with:
+2026-04-28T16:05:58.2977180Z   script: const { setupGlobals } = require('/home/runner/work/_temp/gh-aw/actions/setup_globals.cjs');
+setupGlobals(core, github, context, exec, io, getOctokit);
+const { main } = require('/home/runner/work/_temp/gh-aw/actions/collect_ndjson_output.cjs');
+await main();
+
+2026-04-28T16:05:58.2979183Z   github-token: ***
+2026-04-28T16:05:58.2979556Z   debug: false
+2026-04-28T16:05:58.2979930Z   user-agent: actions/github-script
+2026-04-28T16:05:58.2980393Z   result-encoding: json
+2026-04-28T16:05:58.2981016Z   retries: 0
+2026-04-28T16:05:58.2981396Z   retry-exempt-status-codes: 400,401,403,404,422
+2026-04-28T16:05:58.2981946Z env:
+2026-04-28T16:05:58.2982288Z   DEFAULT_BRANCH: main
+2026-04-28T16:05:58.2982542Z   GH_AW_ASSETS_ALLOWED_EXTS: 
+2026-04-28T16:05:58.2982793Z   GH_AW_ASSETS_BRANCH: 
+2026-04-28T16:05:58.2983023Z   GH_AW_ASSETS_MAX_SIZE_KB: 0
+2026-04-28T16:05:58.2983346Z   GH_AW_MCP_LOG_DIR: /tmp/gh-aw/mcp-logs/safeoutputs
+2026-04-28T16:05:58.2983676Z   GH_AW_WORKFLOW_ID_SANITIZED: dailystatus
+2026-04-28T16:05:58.2987972Z   GH_AW_MODEL_MULTIPLIERS: {
+  "version": "1",
+  "description": "Effective Tokens (ET) computation data per the gh-aw Effective Tokens Specification v0.2.0. Token class weights are applied first to normalize across token classes, then the per-model multiplier scales the result relative to the reference model.",
+  "reference_model": "claude-sonnet-4.5",
+  "token_class_weights": {
+    "input": 1.0,
+    "cached_input": 0.1,
+    "output": 4.0,
+    "reasoning": 4.0,
+    "cache_write": 1.0
+  },
+  "multipliers": {
+    "claude-haiku-4.5": 0.1,
+    "claude-3-5-haiku": 0.1,
+    "claude-3-haiku": 0.1,
+    "claude-sonnet-4.5": 1.0,
+    "claude-sonnet-4.6": 1.0,
+    "claude-3-5-sonnet": 1.0,
+    "claude-3-7-sonnet": 1.0,
+    "claude-3-sonnet": 1.0,
+    "claude-opus-4.5": 5.0,
+    "claude-opus-4.6": 5.0,
+    "claude-3-5-opus": 5.0,
+    "claude-3-opus": 5.0,
+    "gpt-4o": 1.0,
+    "gpt-4o-mini": 0.1,
+    "gpt-4.1": 1.0,
+    "gpt-4.1-2025-04-14": 1.0,
+    "gpt-41-copilot": 1.0,
+    "gpt-4.1-mini": 0.1,
+    "gpt-4.1-nano": 0.05,
+    "gpt-4-turbo": 1.0,
+    "gpt-4": 1.0,
+    "gpt-5": 1.0,
+    "gpt-5-mini": 0,
+    "gpt-5.1": 1.0,
+    "gpt-5.1-codex": 1.0,
+    "gpt-5.1-codex-mini": 0.33,
+    "gpt-5.1-codex-max": 1.0,
+    "gpt-5.2": 1.0,
+    "gpt-5.2-codex": 1.0,
+    "gpt-5.3-codex": 1.0,
+    "gpt-5.4": 1.0,
+    "gpt-5.4-mini": 0.33,
+    "o1": 3.0,
+    "o1-mini": 0.5,
+    "o1-pro": 10.0,
+    "o3": 3.0,
+    "o3-mini": 0.5,
+    "o4-mini": 0.5,
+    "gemini-2.5-pro": 1.0,
+    "gemini-2.5-flash": 0.2,
+    "gemini-2.0-flash": 0.1,
+    "gemini-1.5-pro": 1.0,
+    "gemini-1.5-flash": 0.1
+  }
+}
+2026-04-28T16:05:58.2992807Z   GITHUB_AW_OTEL_TRACE_ID: c7c247f3fa45f09cd9f2b44f9f4e69ce
+2026-04-28T16:05:58.2993168Z   GITHUB_AW_OTEL_PARENT_SPAN_ID: 78c1c7fb37b4a408
+2026-04-28T16:05:58.2993479Z   GITHUB_AW_OTEL_JOB_START_MS: 1777392307375
+2026-04-28T16:05:58.2993869Z   GH_AW_SAFE_OUTPUTS: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-04-28T16:05:58.3001029Z   GH_AW_ALLOWED_DOMAINS: api.anthropic.com,api.snapcraft.io,archive.ubuntu.com,azure.archive.ubuntu.com,crl.geotrust.com,crl.globalsign.com,crl.identrust.com,crl.sectigo.com,crl.thawte.com,crl.usertrust.com,crl.verisign.com,crl3.digicert.com,crl4.digicert.com,crls.ssl.com,github.com,host.docker.internal,json-schema.org,json.schemastore.org,keyserver.ubuntu.com,ocsp.digicert.com,ocsp.geotrust.com,ocsp.globalsign.com,ocsp.identrust.com,ocsp.sectigo.com,ocsp.ssl.com,ocsp.thawte.com,ocsp.usertrust.com,ocsp.verisign.com,packagecloud.io,packages.cloud.google.com,packages.microsoft.com,ppa.launchpad.net,raw.githubusercontent.com,registry.npmjs.org,s.symcb.com,s.symcd.com,security.ubuntu.com,ts-crl.ws.symantec.com,ts-ocsp.ws.symantec.com,www.googleapis.com
+2026-04-28T16:05:58.3007848Z   GITHUB_SERVER_URL: https://github.com
+2026-04-28T16:05:58.3008156Z   GITHUB_API_URL: https://api.github.com
+2026-04-28T16:05:58.3008627Z ##[endgroup]
+2026-04-28T16:05:58.4196596Z Loaded validation config from /home/runner/work/_temp/gh-aw/safeoutputs/validation.json
+2026-04-28T16:05:58.4198017Z Found 1 unique mentions in text
+2026-04-28T16:05:58.5683435Z Cached 1 recent collaborators for optimistic resolution
+2026-04-28T16:05:58.5684907Z Resolved 0 mentions via individual API calls
+2026-04-28T16:05:58.5686397Z Total allowed mentions: 1
+2026-04-28T16:05:58.5687384Z [OUTPUT COLLECTOR] Allowed mentions: strawgate
+2026-04-28T16:05:58.5689084Z [INGESTION] Reading config from: /home/runner/work/_temp/gh-aw/safeoutputs/config.json
+2026-04-28T16:05:58.5692233Z [INGESTION] Raw config content: {"create_issue":{"labels":["automation","daily"],"max":1,"title_prefix":"[daily-status] "},"create_report_incomplete_issue":{},"missing_data":{},"missing_tool":{},"noop":{"max":1,"report-as-issue":"true"},"report_incomplete":{}}
+2026-04-28T16:05:58.5694332Z 
+2026-04-28T16:05:58.5695715Z [INGESTION] Parsed config keys: ["create_issue","create_report_incomplete_issue","missing_data","missing_tool","noop","report_incomplete"]
+2026-04-28T16:05:58.5726230Z [INGESTION] Output file path: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl
+2026-04-28T16:05:58.5727699Z Output file does not exist: /home/runner/work/_temp/gh-aw/safeoutputs/outputs.jsonl

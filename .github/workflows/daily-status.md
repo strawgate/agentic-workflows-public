@@ -16,16 +16,16 @@ permissions:
   pull-requests: read
 
 engine:
-  id: opencode
+  id: claude
   version: 0.1.0
-  model: anthropic/claude-3-5-sonnet-20241022
+  model: claude-3-5-sonnet-20241022
   env:
     ANTHROPIC_BASE_URL: https://api.minimax.io/anthropic
 
 tools:
   github:
     mode: remote
-    allowed: [list_issues, get_issue, create_issue, list_pull_requests, get_pull_request]
+    allowed: [list_issues, create_issue, list_pull_requests]
 
 safe-outputs:
   github-app:
