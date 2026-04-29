@@ -1,6 +1,6 @@
 ---
 name: "Dev Loop Audit"
-description: "Audit local dev setup time, loop time, and first-time environment setup from scratch"
+description: "Audit whether an agent (or new developer) can successfully set up and run a project from scratch by following documented instructions"
 on:
   workflow_dispatch:
     inputs:
@@ -49,201 +49,146 @@ timeout-minutes: 180
 
 {{#include .github/workflows/gh-aw-fragments/previous-findings.md}}
 
-Audit the local development experience: setup time, dev loop speed, and first-time environment bootstrap.
+Audit whether an agent (or new developer) can successfully set up a project from scratch by following the project's own documentation.
 
 **Target Repository**: ${{ inputs.target_repo }}
 
 ## Your Mission
 
-You are evaluating the **developer experience** from scratch. Your goal is to answer:
+You are testing whether the repository is **agent-friendly** — can you, using only the documented instructions and the available tools (git, npm/pnpm/yarn, docker, make, etc.), successfully:
 
-1. **Setup Time** — How long does it take to go from `git clone` to a running dev environment?
-2. **Loop Time** — How long from editing a file to seeing the change live?
-3. **Reliability** — Does the setup work consistently? Are there race conditions or hidden dependencies?
-4. **Clarity** — Are setup instructions clear? Can a new developer get started without asking questions?
+1. Clone the repo
+2. Install dependencies
+3. Start the application
+4. Run the tests
 
-**Be thorough and skeptical.** If something is slow, unclear, or fragile, it's a finding.
+If you encounter friction, undocumented steps, or broken instructions, document it as a finding.
 
-## Setup: Clone Fresh
+**This is a meta-audit** — you're not testing the app's features, you're testing whether the setup instructions actually work.
 
-Start with a completely fresh clone to simulate a new developer's experience:
+## Setup: Create Fresh Clone
 
 ```bash
-# Create temp directory for audit
 TEMP_DIR=$(mktemp -d)
 cd "$TEMP_DIR"
-
-# Measure clone time
-START=$(date +%s.%N)
 git clone https://github.com/${{ inputs.target_repo }}.git
-CLONE_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-
-# Measure install time
 cd $(basename "${{ inputs.target_repo }}")
-START=$(date +%s.%N)
-pnpm install --frozen-lockfile 2>&1 | tail -5
-INSTALL_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-
-echo "Clone time: ${CLONE_TIME}s"
-echo "Install time: ${INSTALL_TIME}s"
+pwd
 ```
 
-## Audit 1: First-Time Setup
+## Phase 1: Discover the Project
 
-### Step 1: Read Setup Documentation
+Before running any commands, understand what this project is:
 
-1. Read `README.md` — look for "Getting Started", "Development", "Setup" sections
-2. Read `DEVELOPING.md` if it exists
-3. Check for `justfile` or `Makefile` — what `just` or `make` targets exist?
-4. Look for `.env.example` or `.env.template` files
-5. Check for any `CONTRIBUTING.md` or `dev-docs/` directory
+1. Read `README.md` — what does this project do?
+2. Look at the root directory structure — what kind of project is this?
+3. Check for setup files: `package.json`, `Cargo.toml`, `go.mod`, `Makefile`, `justfile`, `docker-compose.yml`, `Dockerfile`, `pyproject.toml`, etc.
+4. Find the documented setup steps — look for "Getting Started", "Development", "Setup", "Install" sections
 
-### Step 2: Execute Setup Commands
+**Record:**
+- What package manager is used (npm/pnpm/yarn/bun/gem/cargo/go/etc)?
+- What is the main language/framework?
+- Are there any special prerequisites (Docker, specific OS, external services)?
+- What commands are documented for setup?
 
-Run the documented setup steps and TIME EVERY COMMAND:
+## Phase 2: Follow the Instructions
+
+**Execute the documented setup steps EXACTLY as written.** Do not improvise or skip steps. If a step doesn't work, that's a finding.
+
+### Step 1: Install Dependencies
 
 ```bash
-# Time each step
-START=$(date +%s.%N)
-just setup 2>&1 | tee /tmp/setup-output.txt
-SETUP_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Total setup time: ${SETUP_TIME}s"
+# Identify and run the correct install command
+# Options (in order of likelihood):
+pnpm install        # if pnpm-lock.yaml or pnpm-workspace.yaml exists
+npm install         # if package-lock.json exists
+yarn install       # if yarn.lock exists
+bun install         # if bun.lockb exists
+make dependencies   # if Makefile with install target
+make setup          # if Makefile with setup target
+just setup          # if justfile exists
+docker compose up   # if docker-compose.yml exists
 
-# Check for errors in output
-if grep -i "error\|failed\|crash\|exception" /tmp/setup-output.txt; then
-  echo "SETUP ERRORS DETECTED"
-fi
+# Record: did it succeed? How long did it take?
 ```
 
-### Step 3: Verify Services Start
+### Step 2: Build/Compile (if applicable)
 
 ```bash
-# Time to start API worker
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/worker dev &
-WORKER_PID=$!
-sleep 30  # Wait for worker to potentially start
-if kill -0 $WORKER_PID 2>/dev/null; then
-  echo "Worker started"
-else
-  echo "Worker failed to start"
-fi
-WORKER_START_TIME=$(echo "$(date +%s.%N) - $START" | bc)
+# Options:
+pnpm build
+npm run build
+make build
+just build
+cargo build
+go build ./...
 
-# Check if ports are listening
-sleep 5
-netstat -an 2>/dev/null | grep -E "8787|3000|4000" || ss -tlnp | grep -E "8787|3000|4000" || true
+# Record: did it succeed? How long?
 ```
 
-### Step 4: Start Frontend Apps
+### Step 3: Start the Application
 
 ```bash
-# Time to start web app
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/web dev &
-WEB_PID=$!
-sleep 30
-if kill -0 $WEB_PID 2>/dev/null; then
-  echo "Web app started"
-else
-  echo "Web app failed to start"
-fi
-WEB_START_TIME=$(echo "$(date +%s.%N) - $START" | bc)
+# Options (check README for the exact command):
+pnpm dev
+npm run dev
+make dev
+just dev
+docker compose up
+just start
+cargo run
+
+# If it starts a server, verify it's running:
+sleep 10
+curl -s -o /dev/null -w "%{http_code}" http://localhost:3000 || \
+curl -s -o /dev/null -w "%{http_code}" http://localhost:8080 || \
+curl -s -o /dev/null -w "%{http_code}" http://localhost:8000 || \
+echo "Could not detect running server"
 ```
 
-### Step 5: Verify End-to-End Works
+### Step 4: Run Tests
 
 ```bash
-# Test that the app actually responds
-curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/ || echo "FAILED"
-curl -s -o /dev/null -w "%{http_code}" http://localhost:8787/healthz || echo "FAILED"
+# Options:
+pnpm test
+npm test
+make test
+just test
+cargo test
+go test ./...
+pytest
 
-# Test that the API worker responds correctly
-curl -s http://localhost:8787/healthz | head -c 200
+# Record: did tests pass? How long did they take?
 ```
 
-## Audit 2: Dev Loop Time
+## Phase 3: Identify Friction
 
-### Hot Reload Detection
+As you execute the steps above, actively look for:
 
-1. Make a trivial change to a file (e.g., add a comment to a .ts file)
-2. Time how long until the change is reflected
-3. Measure across multiple attempts to get average
+### Documentation Issues
+- **Missing steps** — something required but not documented
+- **Outdated docs** — README says X but reality is Y
+- **Wrong commands** — documented command doesn't exist or does different thing
+- **Assumed context** — "just do X" where X requires prior setup
 
-```bash
-# Find a file to modify
-FILE=$(find apps/web/src -name "*.tsx" | head -1)
-echo "Modifying: $FILE"
+### Tooling Issues
+- **Wrong package manager** — docs say npm but project uses pnpm
+- **Version mismatches** — requires Node 18 but project uses Node 20 features
+- **Platform-specific** — works on Mac/Linux but not described as such
+- **Magic commands** — things that work but aren't explained
 
-# Make a change
-START=$(date +%s.%N)
-echo "// test $(date +%s)" >> "$FILE"
-sleep 5  # Give hot reload time to trigger
+### Environment Issues
+- **Missing env vars** — requires `.env` file with secrets/API keys not documented
+- **External dependencies** — needs Docker, database, Redis, etc. not mentioned
+- **Network requirements** — can't work offline
+- **Race conditions** — steps must be done in exact order
 
-# Check if dev server detected the change
-# (watch for output in the dev server logs)
-LOOP_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Hot reload time: ${LOOP_TIME}s"
-
-# Revert the change
-git checkout "$FILE"
-```
-
-### Build Time Audit
-
-```bash
-# Time a production build
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/web build 2>&1 | tail -10
-BUILD_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Build time: ${BUILD_TIME}s"
-```
-
-## Audit 3: Database & Migrations
-
-```bash
-# Check migration status
-pnpm --filter @o11yfleet/worker db-migrations-status 2>&1 || true
-
-# Time to run migrations
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/worker db-migrate 2>&1
-MIGRATION_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Migration time: ${MIGRATION_TIME}s"
-
-# Time to seed data (if applicable)
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/worker db-seed 2>&1 || true
-SEED_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Seed time: ${SEED_TIME}s"
-```
-
-## Audit 4: Test Execution Time
-
-```bash
-# Time to run core tests
-START=$(date +%s.%N)
-pnpm --filter @o11yfleet/web test --run 2>&1 | tail -20
-TEST_TIME=$(echo "$(date +%s.%N) - $START" | bc)
-echo "Test time: ${TEST_TIME}s"
-```
-
-## Audit 5: Identify Friction Points
-
-While performing the audits above, actively look for:
-
-1. **Undocumented prerequisites** — things the setup requires but doesn't mention (e.g., "you need Docker running", "must have Python 3.11")
-2. **Race conditions** — steps that must be done in order or things fail intermittently
-3. **Missing error messages** — commands that fail silently or with cryptic errors
-4. **Obsolete documentation** — README says one thing, reality is different
-5. **Magic steps** — things that work but nobody knows why (hidden environment variables, etc.)
-6. **Slow commands** — anything that takes more than 30s that could be parallelized or cached
-7. **Inconsistent tooling** — some things use `just`, others use `npm`, others use direct `pnpm`
-8. **Platform-specific issues** — works on Mac but not Linux, or vice versa
+### Reliability Issues
+- **Flaky setup** — works sometimes, fails others
+- **Slow steps** — anything taking >2min that could be faster
+- **No error handling** — failures give no useful information
 
 ## Output Format
-
-Create one issue summarizing all findings:
 
 ```
 ## Dev Loop Audit Summary
@@ -251,49 +196,49 @@ Create one issue summarizing all findings:
 **Repository:** [target_repo]
 **Audit date:** [date]
 
-### Setup Time Breakdown
+### Setup Outcome
 
-| Step | Time | Expected | Status |
-|------|------|----------|--------|
-| git clone | Xs | <30s | ✅/❌ |
-| pnpm install | Xs | <60s | ✅/❌ |
-| just setup | Xs | <120s | ✅/❌ |
-| Worker start | Xs | <30s | ✅/❌ |
-| Web app start | Xs | <30s | ✅/❌ |
+| Phase | Status | Duration |
+|-------|--------|---------|
+| Clone | ✅/❌ | Xs |
+| Install deps | ✅/❌ | Xs |
+| Build | ✅/❌ | Xs |
+| Start app | ✅/❌ | Xs |
+| Run tests | ✅/❌ | Xs |
 
-### Dev Loop Performance
+### Findings
 
-| Metric | Value | Target | Status |
-|--------|-------|--------|--------|
-| Hot reload | Xs | <3s | ✅/❌ |
-| Full build | Xs | <120s | ✅/❌ |
-| Test suite | Xs | <60s | ✅/❌ |
-| Migrations | Xs | <10s | ✅/❌ |
+#### Critical (Blocks Setup)
 
-### Critical Issues
+**1. [Title]**
+- **What:** [specific problem]
+- **Doc says:** [what README says]
+- **Reality:** [what actually happens]
+- **Fix:** [how to fix the docs or the setup]
 
-#### 1. [Title]
-**Severity:** [critical/high/medium]
-**Finding:** [what you observed]
-**Impact:** [developer productivity impact]
-**Recommendation:** [specific fix]
+#### High (Significant Friction)
 
-... (more issues)
+...
+
+#### Medium (Minor Issues)
+
+...
 
 ### Friction Points
 
-- [ ] [Specific friction point with recommendation]
+1. [ ] [Issue with recommendation]
 
-### Overall DX Score
+### Is This Repo Agent-Friendly?
 
-Rate the overall developer experience: [1-10]
+Rate from 1-10: [score]
+
+**Reasoning:** [why you gave this score]
 
 ## Recommendations
 
-Priority fixes:
-1. [Most impactful change]
+1. [Most impactful fix]
 2. [Second most impactful]
 3. [Third most impactful]
 ```
 
-If the dev experience is excellent with no significant issues, call `noop`.
+If setup worked flawlessly with no friction, call `noop`.
