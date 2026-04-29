@@ -52,6 +52,10 @@ safe-outputs:
 timeout-minutes: 90
 ---
 
+{{#include .github/workflows/gh-aw-fragments/rigor.md}}
+
+{{#include .github/workflows/gh-aw-fragments/previous-findings.md}}
+
 Audit Rust code for language-specific anti-patterns, unsafe usage, and best practice violations.
 
 **Target Repository**: ${{ inputs.target_repo }}
@@ -162,24 +166,29 @@ Audit Rust code for language-specific anti-patterns, unsafe usage, and best prac
 ## Issue Format
 
 Create one consolidated issue with all findings:
-Rust Code Audit Summary
-Repository: [target_repo]
-Files audited: [count]
-Crates analyzed: [list library vs binary crates]
-Issues found: [count by severity]
 
-Critical Severity
-1. [Title]
-File: [path:line]
-Problem: [description]
-Fix: [suggested approach]
+```
+## Rust Code Audit Summary
 
-High Priority
+**Repository:** [target_repo]
+**Files audited:** [count]
+**Crates analyzed:** [list library vs binary crates]
+**Issues found:** [count by severity]
+
+### Critical Severity
+
+#### 1. [Title]
+**File:** [path:line]
+**Problem:** [description]
+**Fix:** [suggested approach]
+
+### High Priority
+
 ...
 
-Recommended Actions
-[Actionable fix for each critical issue]
+## Recommended Actions
 
-text
+- [ ] [Actionable fix for each critical issue]
+```
 
 If no significant Rust-specific issues found, call `noop`.
