@@ -52,6 +52,10 @@ safe-outputs:
 timeout-minutes: 90
 ---
 
+{{#include .github/workflows/gh-aw-fragments/rigor.md}}
+
+{{#include .github/workflows/gh-aw-fragments/previous-findings.md}}
+
 Audit React and TypeScript code for anti-patterns and best practice violations.
 
 **Target Repository**: ${{ inputs.target_repo }}
@@ -289,5 +293,41 @@ accidental mutation.
 
 ## Issue Output Format
 
-Create one consolidated issue with all findings, grouped by severity. Skip sections with no
-findings.
+Create one consolidated issue with all findings, grouped by severity. Skip sections with no findings.
+
+### Before Filing — Quality Gate
+
+**Every finding must pass ALL of these:**
+1. **Concrete evidence** — exact file path and line number
+2. **Actionable** — a maintainer can fix it without re-investigating
+3. **Not duplicate** — checked `previous-findings.json` for existing issues
+4. **Worth human time** — not noise or trivial
+
+**If no findings pass all four gates, call `noop`.**
+
+### Issue Format
+
+```
+## React/TypeScript Code Audit Summary
+
+**Repository:** [target_repo]
+**Files audited:** [count]
+**Issues found:** [count by severity]
+
+### Critical Severity
+
+#### 1. [Title]
+**File:** [path:line]
+**Problem:** [description]
+**Fix:** [specific approach]
+
+### High Priority
+
+...
+
+## Recommended Actions
+
+- [ ] [Actionable fix for each critical issue]
+```
+
+If no significant React/TypeScript issues found, call `noop`.
