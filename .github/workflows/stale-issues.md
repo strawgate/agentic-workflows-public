@@ -20,6 +20,7 @@ on:
 permissions:
   contents: read
   issues: read
+  pull-requests: read
 
 github-app:
   client-id: ${{ vars.APP_ID }}
